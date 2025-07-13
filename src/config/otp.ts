@@ -1,16 +1,11 @@
-import { authenticator, totp, hotp } from 'otplib';
-
-authenticator.options = {
-  digits: 6,
-  step: 30, 
-};
+import { totp, hotp } from 'otplib';
 
 totp.options = {
   digits: 6,
-  step: 30,
+  step: 60,
 };
 
 hotp.options = {
   digits: 6,
-  counter: 0,
+  step: 60,
 };

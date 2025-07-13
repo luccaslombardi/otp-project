@@ -5,6 +5,8 @@ import { GenerateTOTPService } from './application/services/totp/generate-totp.s
 import { ValidateTOTPService } from './application/services/totp/validate-totp.service';
 import { GenerateHOTPController } from './interfaces/controllers/hotp/generate-hotp.controller';
 import { GenerateHOTPService } from './application/services/hotp/generate-hotp.service';
+import { ValidateHOTPController } from './interfaces/controllers/hotp/validate-hotp.controller';
+import { ValidateHOTPService } from './application/services/hotp/validate-hotp.service';
 
 @Module({
   controllers: [
@@ -12,14 +14,16 @@ import { GenerateHOTPService } from './application/services/hotp/generate-hotp.s
     GenerateTOTPController, 
     ValidateTOTPController,
     //HOTP
-    GenerateHOTPController
+    GenerateHOTPController,
+    ValidateHOTPController,
   ],
   providers: [
     //TOTP
     GenerateTOTPService, 
     ValidateTOTPService,
     //HOTO
-    GenerateHOTPService
+    GenerateHOTPService,
+    ValidateHOTPService
   ],
 })
 export class OtpModule {}

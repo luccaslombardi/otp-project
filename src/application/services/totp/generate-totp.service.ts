@@ -16,8 +16,8 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
 
     const token = totp.generate(secret);
    
-    const step = totp.options.step || 30;
-    const expiresAt = new Date(Date.now() + step * 1000);
+    const step = totp.options.step || 60;
+    const expiresAt = new Date(Date.now() + step);
 
     return {
       token,
