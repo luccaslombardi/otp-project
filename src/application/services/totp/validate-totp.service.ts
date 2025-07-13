@@ -1,4 +1,4 @@
-import { ValidateTOTPUseCase } from 'src/domain/usecases/validate-totp.usecase';
+import { ValidateTOTPUseCase } from 'src/domain/usecases/totp/validate-totp.usecase';
 import { totp } from 'otplib';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';

@@ -1,5 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { GenerateTOTPService } from 'src/application/services/generate-totp.service';
+import { GenerateTOTPService } from 'src/application/services/totp/generate-totp.service';
 import { GenerateTOTPDto } from './dto/generate-totp.dto';
 
 @Controller('otp/totp')

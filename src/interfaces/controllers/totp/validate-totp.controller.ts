@@ -1,6 +1,6 @@
 // src/interfaces/controllers/validate-totp.controller.ts
 import { Controller, Post, Body } from '@nestjs/common';
-import { ValidateTOTPService } from 'src/application/services/validate-totp.service';
+import { ValidateTOTPService } from 'src/application/services/totp/validate-totp.service';
 import { ValidateTOTPDto } from './dto/validate-totp.dto';
 
 @Controller('otp/totp/validate')

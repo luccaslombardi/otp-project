@@ -1,4 +1,4 @@
-import { GenerateTOTPUseCase } from 'src/domain/usecases/generate-totp.usecase';
+import { GenerateTOTPUseCase } from 'src/domain/usecases/totp/generate-totp.usecase';
 import { totp } from 'otplib';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
