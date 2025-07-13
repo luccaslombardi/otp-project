@@ -17,10 +17,12 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
     const token = totp.generate(secret);
    
     const step = totp.options.step || 60;
-    const expiresAt = new Date(Date.now() + step);
+    const createdAt = new Date(Date.now());
+    const expiresAt = new Date(Date.now() + step * 1000)
 
     return {
       token,
+      createdAt,
       expiresAt,
     };
   }
