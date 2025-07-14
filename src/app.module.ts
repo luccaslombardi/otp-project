@@ -3,8 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OtpModule } from './otp.module';
 import { ConfigModule } from '@nestjs/config';
-import { dynamoProvider } from './infraestructure/external/aws/dynamo.provider';
-import { DynamoUserOtpRepository } from './infraestructure/repositories/dynamo-user-otp.repository';
+import { DatabaseModule } from './database.module';
 
 @Module({
   imports: [
@@ -12,14 +11,9 @@ import { DynamoUserOtpRepository } from './infraestructure/repositories/dynamo-u
       isGlobal: true,
       envFilePath: '.env.development.local'
     }),
-    OtpModule],
+    OtpModule,
+    DatabaseModule],
   controllers: [AppController],
-  providers: [
-    AppService, 
-    dynamoProvider, {
-    provide: 'UserOtpRepository',
-    useClass: DynamoUserOtpRepository
-  }],
-  exports: [dynamoProvider, 'UserOtpRepository']
+  providers: [AppService],
 })
 export class AppModule {}

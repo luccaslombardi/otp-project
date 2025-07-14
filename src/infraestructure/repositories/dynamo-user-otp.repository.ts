@@ -11,14 +11,23 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
   ) {}
 
   async save(userId: string, secret: string, createdAt: string, expiresAt?: string, counter?: number): Promise<void> {
+    const item: Record<string, any> = {
+      userId,
+      secret,
+      createdAt,
+    };
+    
+    if (expiresAt) {
+      item.expiresAt = expiresAt;
+    }
+
+    if (counter !== undefined) {
+      item.counter = counter;
+    }
+    
     const command = new PutCommand({
       TableName: this.tableName,
-      Item: {
-        userId,
-        secret,
-        counter,
-        createdAt,
-      },
+      Item: item,
     });
 
     await this.dynamo.send(command);

@@ -7,8 +7,11 @@ import { GenerateTOTPService } from './application/services/totp/generate-totp.s
 import { ValidateTOTPService } from './application/services/totp/validate-totp.service';
 import { GenerateHOTPService } from './application/services/hotp/generate-hotp.service';
 import { ValidateHOTPService } from './application/services/hotp/validate-hotp.service';
+import { DatabaseModule } from './database.module';
+import { GetUserOtpService } from './application/services/get-user-otp.service';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [
     //TOTP
     GenerateTOTPController, 
@@ -18,10 +21,7 @@ import { ValidateHOTPService } from './application/services/hotp/validate-hotp.s
     ValidateHOTPController,
   ],
   providers: [
-    {
-      provide: 'UserOtpRepository',
-      useExisting: 'UserOtpRepository',
-    },
+    GetUserOtpService,
     //TOTP
     GenerateTOTPService, 
     ValidateTOTPService,
@@ -30,6 +30,7 @@ import { ValidateHOTPService } from './application/services/hotp/validate-hotp.s
     ValidateHOTPService
   ],
   exports: [
+    GetUserOtpService,
     GenerateTOTPService,
     ValidateTOTPService,
     GenerateHOTPService,
