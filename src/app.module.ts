@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OtpModule } from './otp.module';
 import { ConfigModule } from '@nestjs/config';
+import { dynamoProvider } from './infraestructure/external/aws/dynamo.provider';
+import { DynamoUserOtpRepository } from './infraestructure/repositories/dynamo-user-otp.repository';
 
 @Module({
   imports: [
@@ -12,6 +14,12 @@ import { ConfigModule } from '@nestjs/config';
     }),
     OtpModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService, 
+    dynamoProvider, {
+    provide: 'UserOtpRepository',
+    useClass: DynamoUserOtpRepository
+  }],
+  exports: [dynamoProvider, 'UserOtpRepository']
 })
 export class AppModule {}
