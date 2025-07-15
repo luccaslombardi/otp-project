@@ -1,13 +1,18 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ValidateHOTPService } from 'src/application/services/hotp/validate-hotp.service';
 import { ValidateHOTPDto } from './dto/validate-hotp.dto';
+import { ApiOperation, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('otp')
 @Controller('otp/hotp/validate')
 export class ValidateHOTPController {
   constructor(private readonly validateHOTPService: ValidateHOTPService) {}
 
   @Post()
-  async handle(@Body() body: ValidateHOTPDto) {
+  @ApiOperation({ summary: 'Valida um token HOTP' })
+  @ApiBody({ type: ValidateHOTPDto })
+  @ApiResponse({ status: 200, description: 'Token validado' })
+  async validateHOTPController(@Body() body: ValidateHOTPDto) {
     const { userId, token, counter } = body;
     const isValid = await this.validateHOTPService.execute(userId, token, counter);
     return { isValid };
