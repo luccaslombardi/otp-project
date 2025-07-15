@@ -10,10 +10,11 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     @Inject('DYNAMO_CLIENT') private readonly dynamo: DynamoDBDocumentClient
   ) {}
 
-  async save(userId: string, secret: string, createdAt: string, expiresAt?: string, counter?: number): Promise<void> {
+  async save(userId: string,  secret: string, typeOtp: 'TOTP' | 'HOTP', createdAt: string, expiresAt?: string, counter?: number): Promise<void> {
     const item: Record<string, any> = {
       userId,
       secret,
+      typeOtp,
       createdAt,
     };
     
@@ -43,13 +44,17 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     return result.Item || null;
   }
 
-  async updateCounter(userId: string, counter: number): Promise<void> {
+  async updateCounter(userId: string, counter: number, updatedAt: string): Promise<void> {
     const command = new UpdateCommand({
       TableName: this.tableName,
       Key: { userId },
-      UpdateExpression: 'SET counter = :counter',
+      UpdateExpression: 'SET #counter = :counter, updatedAt = :updatedAt',
+      ExpressionAttributeNames: {
+        '#counter': 'counter', //counter é um nome reservado, então precisou ser tratado
+      },
       ExpressionAttributeValues: {
         ':counter': counter,
+        ':updatedAt': updatedAt,
       },
     });
 

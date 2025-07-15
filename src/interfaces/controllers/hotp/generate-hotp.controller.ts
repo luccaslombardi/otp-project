@@ -9,8 +9,8 @@ export class GenerateHOTPController {
 
   @Post()
   async handle(@Body() body: GenerateHOTPDto) {
-    const { userId, counter } = body;
-    const result = await this.generateHOTPService.execute(userId, counter);
+    const { userId } = body;
+    const result = await this.generateHOTPService.execute(userId);
     return result;
   }
 }

@@ -17,10 +17,9 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
 
     const existing = await this.getUserOtpService.execute(userId);
     const secret = existing?.secret || authenticator.generateSecret();
-    
+
     const token = totp.generate(secret)
     const step = totp.options.step || 300 ;
-    console.log(step, token, secret)
 
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + step * 1000);
@@ -28,7 +27,8 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
     try {
       await this.userOtpRepository.save(
         userId, 
-        secret, 
+        secret,
+        'TOTP',
         createdAt.toISOString(), 
         expiresAt.toISOString()
       );

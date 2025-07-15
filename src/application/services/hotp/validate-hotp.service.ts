@@ -1,20 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { hotp } from 'otplib';
 import { ValidateHOTPUseCase } from 'src/domain/usecases/hotp/validate-hotp.usecase';
+import { GetUserOtpService } from '../get-user-otp.service';
 
 @Injectable()
 export class ValidateHOTPService implements ValidateHOTPUseCase {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly getUserOtpService: GetUserOtpService) {}
 
   async execute(userId: string, token: string, counter: number): Promise<boolean> {
-    const secret = this.configService.get<string>('OTP_STATIC_SECRET');
+    try {
+      const existing = await this.getUserOtpService.execute(userId);
+      
+      if (!existing || !existing.secret) {
+        throw new NotFoundException('Usuário não encontrado.');
+      }
 
-    if (!secret) {
-      throw new Error('OTP secret is not defined');
+      const isValid = hotp.check(token, existing.secret, counter);
+      return isValid;
+
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      console.error('Erro ao validar token HOTP:', error);
+      throw new Error('Erro ao validar token. Tente novamente mais tarde.');
     }
-
-    const isValid = hotp.check(token, secret, counter);
-    return isValid;
   }
 }

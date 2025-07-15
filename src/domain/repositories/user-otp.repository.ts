@@ -1,7 +1,8 @@
 export interface UserOtpRepository {
   save(
-    userId: string, 
-    secret: string, 
+    userId: string,
+    secret: string,
+    typeOtp: 'TOTP' | 'HOTP', 
     createdAt: string, 
     expiresAt?: string, 
     counter?: number
@@ -12,6 +13,7 @@ export interface UserOtpRepository {
   ): Promise<{
     userId: string;
     secret: string;
+    typeOtp: 'TOTP' | 'HOTP';
     counter?: number;
     createdAt: Date;
     expiresAt?: string;
@@ -19,6 +21,7 @@ export interface UserOtpRepository {
   
   updateCounter(
     userId: string, 
-    counter: number
+    counter: number,
+    updatedAt: string
   ): Promise<void>;
 }
