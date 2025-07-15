@@ -26,7 +26,7 @@ export interface UserOtpRepository {
     expiresAt?: string
   ): Promise<void>;
 
-  updateTypeOtp(
+  updateOtpMetadata(
     userId: string, 
     typeOtp: 'TOTP' | 'HOTP',
     updatedAt: string,

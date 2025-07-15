@@ -69,7 +69,7 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     await this.dynamo.send(command);
   }
 
-  async updateTypeOtp (userId: string, typeOtp: 'TOTP' | 'HOTP', updatedAt: string, expiresAt?: string) {
+  async updateOtpMetadata (userId: string, typeOtp: 'TOTP' | 'HOTP', updatedAt: string, expiresAt?: string) {
     let updateExpression = 'SET typeOtp = :typeOtp, updatedAt = :updatedAt';
     const expressionAttributeValues: Record<string, any> = {
       ':typeOtp': typeOtp,

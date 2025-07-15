@@ -36,7 +36,7 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
       } 
       else {
         const updatedAt = new Date().toISOString();
-        await this.userOtpRepository.updateTypeOtp(userId, 'TOTP', updatedAt, expiresAt.toISOString());
+        await this.userOtpRepository.updateOtpMetadata(userId, 'TOTP', updatedAt, expiresAt.toISOString());
       }
       
     } catch (error) {

@@ -39,7 +39,7 @@ export class GenerateHOTPService implements GenerateHOTPUseCase {
       } 
       else if (existing.typeOtp !== 'HOTP') {
         const updatedAt = new Date().toISOString();
-        await this.userOtpRepository.updateTypeOtp(userId, 'HOTP', updatedAt);
+        await this.userOtpRepository.updateOtpMetadata(userId, 'HOTP', updatedAt);
         
       } 
       else {
