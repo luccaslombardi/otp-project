@@ -1,6 +1,6 @@
 import { ValidateTOTPUseCase } from 'src/domain/usecases/totp/validate-totp.usecase';
 import { totp } from 'otplib';
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { GetUserOtpService } from '../get-user-otp.service';
 
 @Injectable()
@@ -14,6 +14,10 @@ export class ValidateTOTPService implements ValidateTOTPUseCase {
 
       if (!existing || !existing.secret) {
         throw new NotFoundException('Usuário não encontrado.');
+      }
+
+      if (existing.typeOtp != 'TOTP') {
+        throw new BadRequestException('Tipo de token incorreto.');
       }
 
       const isValid = totp.check(token, existing.secret);

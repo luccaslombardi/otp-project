@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { UserOtpRepository } from 'src/domain/repositories/user-otp.repository';
+import { createDecipheriv } from 'crypto';
 
 @Injectable()
 export class DynamoUserOtpRepository implements UserOtpRepository {
@@ -10,13 +11,16 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     @Inject('DYNAMO_CLIENT') private readonly dynamo: DynamoDBDocumentClient
   ) {}
 
-  async save(userId: string,  secret: string, typeOtp: 'TOTP' | 'HOTP', createdAt: string, expiresAt?: string, counter?: number): Promise<void> {
+  async save(userId: string,  secret: string, typeOtp: 'TOTP' | 'HOTP', createdAt?: string, expiresAt?: string, counter?: number, updatedAt?: string): Promise<void> {
     const item: Record<string, any> = {
       userId,
       secret,
       typeOtp,
-      createdAt,
     };
+
+    if (createdAt) {
+      item.createdAt = createdAt;
+    }
     
     if (expiresAt) {
       item.expiresAt = expiresAt;
@@ -24,6 +28,10 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
 
     if (counter !== undefined) {
       item.counter = counter;
+    }
+
+    if (updatedAt) {
+      item.updatedAt;
     }
     
     const command = new PutCommand({
@@ -59,5 +67,27 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     });
 
     await this.dynamo.send(command);
+  }
+
+  async updateTypeOtp (userId: string, typeOtp: 'TOTP' | 'HOTP', updatedAt: string, expiresAt?: string) {
+    let updateExpression = 'SET typeOtp = :typeOtp, updatedAt = :updatedAt';
+    const expressionAttributeValues: Record<string, any> = {
+      ':typeOtp': typeOtp,
+      ':updatedAt': updatedAt,
+    };
+
+    if (expiresAt) {
+      updateExpression += ', expiresAt = :expiresAt';
+      expressionAttributeValues[':expiresAt'] = expiresAt;
+    }
+
+    const command = new UpdateCommand({
+      TableName: this.tableName,
+      Key: { userId },
+      UpdateExpression: updateExpression,
+      ExpressionAttributeValues: expressionAttributeValues,
+    });
+
+    await this.dynamo.send(command)
   }
 }

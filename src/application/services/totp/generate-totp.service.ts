@@ -25,13 +25,19 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
     const expiresAt = new Date(Date.now() + step * 1000);
 
     try {
-      await this.userOtpRepository.save(
-        userId, 
-        secret,
-        'TOTP',
-        createdAt.toISOString(), 
-        expiresAt.toISOString()
-      );
+      if (!existing) {
+        await this.userOtpRepository.save(
+          userId, 
+          secret,
+          'TOTP',
+          createdAt.toISOString(), 
+          expiresAt.toISOString()
+        );
+      } 
+      else {
+        const updatedAt = new Date().toISOString();
+        await this.userOtpRepository.updateTypeOtp(userId, 'TOTP', updatedAt, expiresAt.toISOString());
+      }
       
     } catch (error) {
       console.error('Erro ao salvar/atualizar usuario no banco de dados:', error);

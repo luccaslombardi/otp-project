@@ -26,6 +26,7 @@ export class GenerateHOTPService implements GenerateHOTPUseCase {
     try {
       if (!existing) {
         const createdAt = new Date(Date.now());
+        console.log("To aqui")
 
         await this.userOtpRepository.save(
           userId, 
@@ -35,9 +36,14 @@ export class GenerateHOTPService implements GenerateHOTPUseCase {
           undefined, //não tem data de expiração
           newCounter
         );
-      } else{
+      } 
+      else if (existing.typeOtp !== 'HOTP') {
         const updatedAt = new Date().toISOString();
-
+        await this.userOtpRepository.updateTypeOtp(userId, 'HOTP', updatedAt);
+        
+      } 
+      else {
+        const updatedAt = new Date().toISOString();
         await this.userOtpRepository.updateCounter(userId, newCounter, updatedAt);
       }    
     } catch (error) {

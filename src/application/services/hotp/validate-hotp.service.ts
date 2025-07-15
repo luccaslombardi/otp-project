@@ -1,4 +1,4 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { hotp } from 'otplib';
 import { ValidateHOTPUseCase } from 'src/domain/usecases/hotp/validate-hotp.usecase';
@@ -14,6 +14,10 @@ export class ValidateHOTPService implements ValidateHOTPUseCase {
       
       if (!existing || !existing.secret) {
         throw new NotFoundException('Usuário não encontrado.');
+      }
+
+      if (existing.typeOtp !== 'HOTP') {
+        throw new BadRequestException('Tipo de token incorreto.');
       }
 
       const isValid = hotp.check(token, existing.secret, counter);

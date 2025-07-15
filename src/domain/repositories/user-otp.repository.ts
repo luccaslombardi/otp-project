@@ -3,9 +3,10 @@ export interface UserOtpRepository {
     userId: string,
     secret: string,
     typeOtp: 'TOTP' | 'HOTP', 
-    createdAt: string, 
+    createdAt?: string, 
     expiresAt?: string, 
-    counter?: number
+    counter?: number,
+    updatedAt?: string
   ): Promise<void>;
 
   findByUserId(
@@ -16,12 +17,19 @@ export interface UserOtpRepository {
     typeOtp: 'TOTP' | 'HOTP';
     counter?: number;
     createdAt: Date;
-    expiresAt?: string;
   } | null>;
   
   updateCounter(
     userId: string, 
     counter: number,
-    updatedAt: string
+    updatedAt: string,
+    expiresAt?: string
+  ): Promise<void>;
+
+  updateTypeOtp(
+    userId: string, 
+    typeOtp: 'TOTP' | 'HOTP',
+    updatedAt: string,
+    expiresAt?: string
   ): Promise<void>;
 }
