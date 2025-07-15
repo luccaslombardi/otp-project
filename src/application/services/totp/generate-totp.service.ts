@@ -1,12 +1,14 @@
 import { GenerateTOTPUseCase } from 'src/domain/usecases/totp/generate-totp.usecase';
 import { totp, authenticator  } from 'otplib';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UserOtpRepository } from 'src/domain/repositories/user-otp.repository';
 import { formatToBrazilianDate } from 'src/utils/format-date.util';
 import { GetUserOtpService } from '../get-user-otp.service';
 
 @Injectable()
 export class GenerateTOTPService implements GenerateTOTPUseCase {
+  private readonly logger = new Logger(GenerateTOTPService.name);
+
   constructor(
     @Inject('UserOtpRepository')
     private readonly userOtpRepository: UserOtpRepository,
@@ -14,6 +16,7 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
   ) {}
   
   async execute(userId: string) {
+    this.logger.log(`Gerando TOTP para user ${userId}`);
 
     const existing = await this.getUserOtpService.execute(userId);
     const secret = existing?.secret || authenticator.generateSecret();
@@ -26,6 +29,8 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
 
     try {
       if (!existing) {
+        this.logger.log(`Usuário não encontrado, criando novo registro para user ${userId}`);
+
         await this.userOtpRepository.save(
           userId, 
           secret,
@@ -35,14 +40,18 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
         );
       } 
       else {
+        this.logger.warn(`Atualizando registros para ${userId} com os dados`);
+
         const updatedAt = new Date().toISOString();
         await this.userOtpRepository.updateOtpMetadata(userId, 'TOTP', updatedAt, expiresAt.toISOString());
       }
       
     } catch (error) {
-      console.error('Erro ao salvar/atualizar usuario no banco de dados:', error);
+      this.logger.error(`Erro ao salvar/atualizar usuário no banco de dados para user ${userId}`, error.stack);
       throw new Error('Erro ao salvar no banco de dados. Tente novamente mais tarde.');
     }
+
+    this.logger.log(`Token TOTP gerado para user ${userId}`);
 
     return {
       token,

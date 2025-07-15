@@ -7,7 +7,7 @@ import { DatabaseModule } from './database.module';
   imports: [
     ConfigModule.forRoot ({
       isGlobal: true,
-      envFilePath: '.env.development.local'
+      envFilePath: '.env'
     }),
     OtpModule,
     DatabaseModule],

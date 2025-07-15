@@ -1,5 +1,3 @@
-// src/application/services/hotp/generate-hotp.service.spec.ts
-
 import { GenerateHOTPService } from '../../../../src/application/services/hotp/generate-hotp.service';
 import { GetUserOtpService } from '../../../../src/application/services/get-user-otp.service';
 import { UserOtpRepository } from 'src/domain/repositories/user-otp.repository';
