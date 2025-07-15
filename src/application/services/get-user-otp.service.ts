@@ -12,14 +12,10 @@ export class GetUserOtpService {
     try {
        const userOtp = await this.userOtpRepository.findByUserId(userId); 
 
-       if (!userOtp) {
-            throw new NotFoundException('Usuário não encontrado ou OTP não gerado');
-       }
-
        return userOtp
     } catch (error) {
         console.error('Erro ao buscar o usuario', error);
-        throw new InternalServerErrorException('Erro ao buscar dados do OTP');
+        throw new NotFoundException('Erro ao buscar dados do OTP');
     }
   }
 }

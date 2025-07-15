@@ -17,9 +17,10 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
 
     const existing = await this.getUserOtpService.execute(userId);
     const secret = existing?.secret || authenticator.generateSecret();
-
-    const token = totp.generate(secret);
-    const step = totp.options.step || 120;
+    
+    const token = totp.generate(secret)
+    const step = totp.options.step || 300 ;
+    console.log(step, token, secret)
 
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + step * 1000);
@@ -33,11 +34,9 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
       );
       
     } catch (error) {
-      console.error('Erro ao salvar o token TOTP no banco de dados:', error);
-      throw new Error('Erro ao gerar token. Tente novamente mais tarde.');
+      console.error('Erro ao salvar/atualizar usuario no banco de dados:', error);
+      throw new Error('Erro ao salvar no banco de dados. Tente novamente mais tarde.');
     }
-
-    
 
     return {
       token,
