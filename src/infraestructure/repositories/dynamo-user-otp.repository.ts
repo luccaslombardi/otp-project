@@ -31,7 +31,7 @@ export class DynamoUserOtpRepository implements UserOtpRepository {
     }
 
     if (updatedAt) {
-      item.updatedAt;
+      item.updatedAt = updatedAt;
     }
     
     const command = new PutCommand({
