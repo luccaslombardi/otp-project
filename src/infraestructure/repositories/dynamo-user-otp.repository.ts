@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { UserOtpRepository } from 'src/domain/repositories/user-otp.repository';
-import { createDecipheriv } from 'crypto';
 
 @Injectable()
 export class DynamoUserOtpRepository implements UserOtpRepository {
