@@ -1,0 +1,46 @@
+import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import awsLambdaFastify from '@fastify/aws-lambda';
+
+
+let cachedHandler: any;
+
+async function bootstrap() {
+  const adapter = new FastifyAdapter();
+  const app = await NestFactory.create(AppModule, adapter);
+
+  const config = new DocumentBuilder()
+    .setTitle('OTP Project')
+    .setDescription('Projeto para geração e validação de OTP')
+    .setVersion('1.0')
+    .addTag('otp')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-docs', app, document);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  await app.init();
+
+  const instance = app.getHttpAdapter().getInstance();
+  return awsLambdaFastify(instance);
+
+}
+
+export const handler = async (event: any, context: any) => {
+  if (!cachedHandler) {
+    cachedHandler = await bootstrap();
+  }
+
+  return cachedHandler(event, context);
+};

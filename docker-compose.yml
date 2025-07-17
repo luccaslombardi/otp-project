@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  otp-project:
+    container_name: otp-project-local
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    restart: unless-stopped
