@@ -40,7 +40,7 @@ export class GenerateTOTPService implements GenerateTOTPUseCase {
         );
       } 
       else {
-        this.logger.warn(`Atualizando registros para ${userId} com os dados`);
+        this.logger.warn(`Atualizando registros para ${userId}`);
 
         const updatedAt = new Date().toISOString();
         await this.userOtpRepository.updateOtpMetadata(userId, 'TOTP', updatedAt, expiresAt.toISOString());

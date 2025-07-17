@@ -56,7 +56,7 @@ describe('GenerateHOTPService', () => {
       secret: 'EXISTING_SECRET',
       typeOtp: 'TOTP',
       counter: 5,
-      createdAt: new Date(),
+      createdAt: '23/12/23',
     });
 
     (hotp.generate as jest.Mock).mockReturnValue('654321');
@@ -78,7 +78,7 @@ describe('GenerateHOTPService', () => {
       secret: 'EXISTING_SECRET',
       typeOtp: 'HOTP',
       counter: 2,
-      createdAt: new Date(),
+      createdAt: '23/12/23',
     });
 
     (hotp.generate as jest.Mock).mockReturnValue('000000');

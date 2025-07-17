@@ -59,7 +59,7 @@ describe('GenerateTOTPService', () => {
       userId: 'user123',
       secret: 'existing-secret',
       typeOtp: 'HOTP',
-      createdAt: new Date(),
+      createdAt: '23/12/23',
     });
 
     (totp.generate as jest.Mock).mockReturnValue('654321');

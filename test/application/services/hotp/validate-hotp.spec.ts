@@ -30,7 +30,7 @@ describe('ValidateHOTPService', () => {
       userId,
       secret: 'SECRET',
       typeOtp: 'HOTP',
-      createdAt: new Date(),
+      createdAt: '23/12/23',
       counter,
     });
 
@@ -53,7 +53,7 @@ describe('ValidateHOTPService', () => {
       userId: 'user123',
       secret: 'SECRET',
       typeOtp: 'TOTP',
-      createdAt: new Date(),
+      createdAt: '23/12/23',
     });
 
     await expect(service.execute('user123', '000000', 1)).rejects.toThrow(BadRequestException);

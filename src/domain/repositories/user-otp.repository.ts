@@ -16,7 +16,8 @@ export interface UserOtpRepository {
     secret: string;
     typeOtp: 'TOTP' | 'HOTP';
     counter?: number;
-    createdAt: Date;
+    createdAt: string;
+    updatedAt?: string;
   } | null>;
   
   updateCounter(
@@ -29,7 +30,7 @@ export interface UserOtpRepository {
   updateOtpMetadata(
     userId: string, 
     typeOtp: 'TOTP' | 'HOTP',
-    updatedAt: string,
+    updatedAt?: string,
     expiresAt?: string
   ): Promise<void>;
 }

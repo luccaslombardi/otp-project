@@ -4,12 +4,13 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import awsLambdaFastify from '@fastify/aws-lambda';
-
+import { loggerOptions } from './config/logger';
 
 let cachedHandler: any;
 
 async function bootstrap() {
-  const adapter = new FastifyAdapter();
+
+  const adapter = new FastifyAdapter({ logger: loggerOptions });
   const app = await NestFactory.create(AppModule, adapter);
 
   const config = new DocumentBuilder()

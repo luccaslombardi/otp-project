@@ -46,7 +46,7 @@ export class GenerateHOTPService implements GenerateHOTPUseCase {
 
         const updatedAt = new Date().toISOString();
         await this.userOtpRepository.updateOtpMetadata(userId, 'HOTP', updatedAt);
-        
+        await this.userOtpRepository.updateCounter(userId, newCounter, updatedAt);
       } 
       else {
         this.logger.log(`Atualizando contador para user ${userId} para counter ${newCounter}`);

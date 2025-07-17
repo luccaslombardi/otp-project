@@ -22,7 +22,7 @@ describe('GetUserOtpService', () => {
       userId: 'user123',
       secret: 'SECRET',
       typeOtp: 'TOTP' as const,
-      createdAt: new Date(),
+      createdAt: '23/12/23',
     };
 
     userOtpRepository.findByUserId.mockResolvedValue(mockUser);
