@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { OtpModule } from './otp.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database.module';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
@@ -10,7 +11,9 @@ import { DatabaseModule } from './database.module';
       envFilePath: '.env'
     }),
     OtpModule,
-    DatabaseModule],
+    DatabaseModule,
+    AuthModule
+  ],
   controllers: [],
   providers: [],
 })

@@ -1,13 +1,16 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ValidateTOTPService } from 'src/application/services/totp/validate-totp.service';
 import { ValidateTOTPDto } from './dto/validate-totp.dto';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/infraestructure/auth/strategies/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('otp')
 @Controller('otp/totp/validate')
 export class ValidateTOTPController {
   constructor(private readonly validateTOTPService: ValidateTOTPService) {}
 
+ 
   @Post()
   @ApiOperation({ summary: 'Valida um token HOTP' })
   @ApiBody({ type: ValidateTOTPDto })

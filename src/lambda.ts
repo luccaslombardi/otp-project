@@ -1,5 +1,5 @@
 import { FastifyAdapter } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
+import { AppModule } from './module/app.module';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
