@@ -1,10 +1,11 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ValidateHOTPService } from 'src/application/services/hotp/validate-hotp.service';
 import { ValidateHOTPDto } from './dto/validate-hotp.dto';
-import { ApiOperation, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/infraestructure/auth/strategies/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 @ApiTags('otp')
 @Controller('otp/hotp/validate')
 export class ValidateHOTPController {

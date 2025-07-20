@@ -1,7 +1,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
-const isRunningLocally = !!process.env.IS_OFFLINE || process.env.NODE_ENV === 'development';
+const isRunningLocally = process.env.NODE_ENV === 'development';
 
 export const dynamoProvider = {
   provide: 'DYNAMO_CLIENT',

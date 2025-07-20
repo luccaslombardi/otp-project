@@ -1,10 +1,11 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { GenerateHOTPService } from 'src/application/services/hotp/generate-hotp.service';
 import { GenerateHOTPDto } from './dto/generate-hotp.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/infraestructure/auth/strategies/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 @ApiTags('otp')
 @Controller('otp/hotp')
 export class GenerateHOTPController {

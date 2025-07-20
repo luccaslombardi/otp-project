@@ -4,7 +4,7 @@ import { UserOtpRepository } from 'src/domain/repositories/user-otp.repository';
 
 @Injectable()
 export class DynamoUserOtpRepository implements UserOtpRepository {
-  private readonly tableName = 'UserOtp';
+  private readonly tableName = process.env.DYNAMO_TABLE_NAME;
 
   constructor(
     @Inject('DYNAMO_CLIENT') private readonly dynamo: DynamoDBDocumentClient

@@ -1,10 +1,11 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { GenerateTOTPService } from 'src/application/services/totp/generate-totp.service';
 import { GenerateTOTPDto } from './dto/generate-totp.dto';
-import { ApiOperation, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/infraestructure/auth/strategies/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 @ApiTags('otp')
 @Controller('otp/totp')
 export class GenerateTOTPController {

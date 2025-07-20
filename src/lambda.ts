@@ -18,6 +18,16 @@ async function bootstrap() {
     .setDescription('Projeto para geração e validação de OTP')
     .setVersion('1.0')
     .addTag('otp')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'Authorization',
+      description: 'Informe o token JWT no formato: Bearer <token>',
+      in: 'header',
+    },
+    'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

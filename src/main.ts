@@ -14,6 +14,16 @@ async function bootstrap() {
     .setTitle('OTP Project')
     .setDescription('Projeto para geração e validação de OTP (TOTP/HOTP)')
     .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'Authorization',
+      description: 'Informe o token JWT no formato: Bearer <token>',
+      in: 'header',
+    },
+    'access-token',
+    )
     .addTag('otp') 
     .build();
 
