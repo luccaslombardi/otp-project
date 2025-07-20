@@ -1,98 +1,214 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# OTP Project - Geração e Validação de Códigos OTP (TOTP/HOTP)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este é um projeto desenvolvido em **NestJS** com suporte a **Docker**, utilizando **AWS Lambda + API Gateway** para deploy em serverless. Ele fornece uma API REST para **geração e validação de tokens OTP**, nos formatos **TOTP** e **HOTP**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Tecnologias e bibliotecas utilizadas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Framework:** [NestJS](https://nestjs.com/)
+- **Autenticação JWT:** `@nestjs/passport`, `@nestjs/jwt`, `passport-jwt`
+- **Geração e validação de OTP:** [otplib](https://github.com/yeojz/otplib)
+- **Persistência:** AWS **DynamoDB**
+- **Documentação da API:** Swagger com `@nestjs/swagger`
+- **Pino**: Utilizado para logging estruturado da aplicação.
+- **Jest**: Framework utilizado para testes unitários.
+- **Ambiente local:** Docker com `docker-compose` e suporte a multiplataforma (`buildx`)
+- **Deploy Serverless:** AWS Lambda com **imagem container** hospedada no **Amazon ECR** e logs no **Cloudwatch**
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+### Autenticação
 
-## Compile and run the project
+A aplicação utiliza autenticação via **Bearer Token** de forma simplificada. A validação é feita com base em um `SECRET` armazenado nas variáveis de ambiente, sem uso de banco de dados, refresh tokens ou controle de sessões. 
 
-```bash
-# development
-$ npm run start
+Essa implementação foi feita apenas para fins de demonstração, sem uma estrutura de autenticação robusta.
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## Funcionalidades
 
-## Run tests
+- Gerar código TOTP (Time-based One-Time Password)
+- Validar código TOTP
+- Gerar código HOTP (HMAC-based One-Time Password)
+- Validar código HOTP
 
-```bash
-# unit tests
-$ npm run test
+Os dados dos usuários e contadores são armazenados no **DynamoDB**.
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
-```
+## Requisitos
 
-## Deployment
+- [Node.js](https://nodejs.org/) v20+
+- [NPM](https://www.npmjs.com/)
+- [NestJS CLI](https://docs.nestjs.com/cli/overview)
+- [Docker](https://www.docker.com/) e Docker Compose (para execução local opcional)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Clone
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Clone o repositório
+git clone https://github.com/seu-usuario/otp-project.git
+cd otp-project
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## Execução Local 
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+# Instala as dependências
+npm install
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Crie um arquivo `.env` com as credenciais AWS (para rodar com DynamoDB) e um secret JWT (para autenticação das funcionalidades de Auth):
 
-## Support
+```env
+NODE_ENV=development
+AWS_ACCESS_KEY_ID=<access-key-id>
+AWS_SECRET_ACCESS_KEY=<secret-access-key>
+AWS_REGION=us-east-1
+DYNAMO_TABLE_NAME=<nome-tabela-dynamo>
+JWT_SECRET=<jwt-secret>
+```
+Substitua os valores dentro de <> por valores reais. 
+As especificações de cada valor está descrita mais abaixo neste README.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+# Compile os arquivos TypeScript
+npm run build
+```
 
-## Stay in touch
+```bash
+# Rode a aplicação
+npm run start:dev
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+A aplicação estará acessível em `http://localhost:3000`.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Execução via Docker Compose
+
+```bash
+# Build e execução local utilizando o docker-compose
+docker-compose up --build
+```
+
+A aplicação estará acessível em `http://localhost:3000`.
+
+---
+
+## Build para AWS (ECR + Lambda)
+
+```bash
+# Tag para o ECR e validação de credenciais
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <id-repositorio-ecr>.dkr.ecr.us-east-1.amazonaws.com
+
+# Build da imagem multi-arquitetura para o ECR
+docker buildx build --platform linux/amd64 -t <id-repositorio-ecr>.dkr.ecr.us-east-1.amazonaws.com/otp-project:latest --load .
+
+# Push da imagem para o ECR
+docker push <id-repositorio-ecr>.dkr.ecr.us-east-1.amazonaws.com/otp-project:latest
+```
+
+OBS: o valor de <id-repositorio-ecr> deve ser subistituído pelo ID do repositório no AWS ECR.
+
+Deverá acessar o Lambda através do AWS Console e selecionar manualmente a nova imagem.
+
+---
+
+## Variáveis de Ambiente
+
+| Variável                | Descrição                  | Obrigatória         |
+| ----------------------- | -------------------------- | ------------------- |
+| `NODE_ENV`              | Definição do ambiente      | Sim         (local) |
+| `AWS_REGION`            | Região da AWS              | Sim                 |
+| `AWS_ACCESS_KEY_ID`     | Chave de acesso AWS        | Sim         (local) |
+| `AWS_SECRET_ACCESS_KEY` | Segredo de acesso AWS      | Sim         (local) |
+| `DYNAMO_TABLE_NAME`     | Nome da tabela do DynamoDB | Sim                 |
+| `JWT_SECRET`            | Secret para autenticação   | Sim                 |
+
+> No **Lambda**, algumas credenciais são providas de forma automática e/ou não são necessárias, portanto não é preciso defini-las manualmente nas Configurações do Lambda. Apenas localmente conforme descrito acima.
+
+---
+
+### Execução dos Testes
+
+```bash
+# Executar os testes unitários
+npm run test
+```
+
+---
+
+## Endpoints
+
+Acesse a documentação Swagger:
+
+```
+GET /api-docs
+```
+
+Exemplos de endpoints:
+
+### Autenticação
+
+```
+POST /auth/login
+Body: { secret: "123124" }
+```
+
+### Gerar TOTP
+
+```
+POST /otp/totp
+Headers:
+Authorization: Bearer {token}
+Body: 
+{ userId: "new@email.com" }
+```
+
+### Validar TOTP
+
+```
+POST /otp/totp/validate
+Headers:
+Authorization: Bearer {token}
+Body: 
+{ userId: "new@email.com", token: "XXXXX" }
+```
+
+### Gerar HOTP
+
+```
+POST /otp/hotp
+Headers:
+Authorization: Bearer {token}
+Body: 
+{ userId: "new@email.com" }
+```
+
+### Validar HOTP
+
+```
+POST /otp/hotp/validate
+Headers:
+Authorization: Bearer {token}
+Body: 
+{ userId: "new@email.com", token: "XXXXX" }
+```
+
+---
+
+## Observações finais
+
+- A aplicação está pronta para funcionar em ambientes **serverless** e **containerizados**.
+- As roles e permissões IAM precisam estar corretamente configuradas na **função Lambda**.
+- As variáveis de ambiente **sensíveis** não foram commitadas e não foram disponibilizadas via Git por questões de segurança.
+
+---
+
+

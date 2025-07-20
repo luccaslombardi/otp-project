@@ -33,6 +33,7 @@ describe('DynamoUserOtpRepository', () => {
   let mockSend: jest.Mock;
 
   beforeEach(() => {
+    process.env.DYNAMO_TABLE_NAME = 'UserOtp';
     mockSend = jest.fn();
     const mockDynamoClient = { send: mockSend } as unknown as DynamoDBDocumentClient;
     repository = new DynamoUserOtpRepository(mockDynamoClient);
