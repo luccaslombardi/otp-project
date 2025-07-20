@@ -114,7 +114,7 @@ docker buildx build --platform linux/amd64 -t <id-repositorio-ecr>.dkr.ecr.us-ea
 docker push <id-repositorio-ecr>.dkr.ecr.us-east-1.amazonaws.com/otp-project:latest
 ```
 
-OBS: o valor de <id-repositorio-ecr> deve ser subistituído pelo ID do repositório no AWS ECR.
+OBS: o valor de **id-repositorio-ecr** deve ser subistituído pelo ID do repositório no AWS ECR.
 
 Deverá acessar o Lambda através do AWS Console e selecionar manualmente a nova imagem.
 
